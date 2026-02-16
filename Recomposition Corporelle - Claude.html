@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide Recomposition Corporelle</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #13131a;
+            --accent-purple: #9333ea;
+            --accent-purple-dim: #7c3aed;
+            --text-primary: #e8e8ee;
+            --text-secondary: #a1a1b5;
+            --glow: rgba(147, 51, 234, 0.4);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide {
+            flex: 1;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            padding: 3rem 4rem;
+            animation: slideIn 0.5s ease-out;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Background decoration */
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--glow) 0%, transparent 70%);
+            pointer-events: none;
+            opacity: 0.3;
+        }
+
+        h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            text-shadow: 0 0 30px var(--glow);
+        }
+
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--accent-purple);
+            text-shadow: 0 0 20px var(--glow);
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-bottom: 2rem;
+        }
+
+        .content-box {
+            background: rgba(19, 19, 26, 0.95);
+            border: 1px solid rgba(147, 51, 234, 0.4);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0 40px rgba(147, 51, 234, 0.15);
+            position: relative;
+            z-index: 10;
+        }
+
+        .content-box h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.5rem;
+            color: var(--accent-purple);
+            margin-bottom: 1rem;
+            font-weight: 600;
+            text-shadow: 0 0 15px var(--glow);
+        }
+
+        .content-box p {
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .list-item {
+            display: flex;
+            align-items: start;
+            margin-bottom: 1rem;
+            padding-left: 0.5rem;
+        }
+
+        .list-item::before {
+            content: '▸';
+            color: var(--accent-purple);
+            font-size: 1.2rem;
+            margin-right: 1rem;
+            min-width: 20px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(19, 19, 26, 0.5) 100%);
+            border: 1px solid rgba(147, 51, 234, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 30px var(--glow);
+            transform: translateY(-2px);
+        }
+
+        .card h4 {
+            font-family: 'Syne', sans-serif;
+            color: var(--accent-purple);
+            font-size: 1.2rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .food-item {
+            background: rgba(10, 10, 15, 0.9);
+            border: 1px solid rgba(147, 51, 234, 0.4);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+
+        .food-item:hover {
+            background: rgba(19, 19, 26, 1);
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 15px rgba(147, 51, 234, 0.3);
+        }
+
+        .plate-visual {
+            background: var(--bg-secondary);
+            border: 2px solid var(--accent-purple);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 0 50px var(--glow);
+        }
+
+        .plate-section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            gap: 1rem;
+        }
+
+        .plate-icon {
+            font-size: 2rem;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .plate-text {
+            flex: 1;
+        }
+
+        .plate-text strong {
+            color: var(--accent-purple);
+            font-size: 1.1rem;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 100;
+        }
+
+        button {
+            background: var(--bg-secondary);
+            border: 1px solid var(--accent-purple);
+            color: var(--text-primary);
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Syne', sans-serif;
+            font-weight: 600;
+        }
+
+        button:hover {
+            background: var(--accent-purple);
+            box-shadow: 0 0 20px var(--glow);
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .slide-indicator {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            font-family: 'Syne', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .highlight {
+            color: var(--accent-purple);
+            font-weight: 600;
+        }
+
+        .emphasis-box {
+            background: rgba(147, 51, 234, 0.15);
+            border-left: 4px solid var(--accent-purple);
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .text-container {
+            background: rgba(19, 19, 26, 0.85);
+            border: 1px solid rgba(147, 51, 234, 0.3);
+            border-radius: 20px;
+            padding: 3rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 60px rgba(147, 51, 234, 0.2);
+            position: relative;
+            z-index: 10;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 1.5rem 1rem;
+                padding-bottom: 5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 1rem;
+            }
+
+            h2 {
+                font-size: 1.75rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .content-box {
+                padding: 1.25rem;
+                margin-bottom: 1rem;
+            }
+
+            .content-box h3 {
+                font-size: 1.2rem;
+            }
+
+            .content-box p {
+                font-size: 0.9rem;
+            }
+
+            .text-container {
+                padding: 2rem 1.5rem;
+            }
+
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .card {
+                padding: 1.25rem;
+            }
+
+            .card h4 {
+                font-size: 1.1rem;
+            }
+
+            .card p {
+                font-size: 0.9rem;
+            }
+
+            .list-item {
+                font-size: 0.9rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .food-item {
+                font-size: 0.9rem;
+                padding: 0.6rem 0.85rem;
+            }
+
+            .plate-visual {
+                padding: 1.5rem;
+            }
+
+            .plate-section {
+                margin-bottom: 1rem;
+            }
+
+            .plate-icon {
+                font-size: 1.5rem;
+                min-width: 40px;
+            }
+
+            .plate-text {
+                font-size: 0.9rem;
+            }
+
+            .plate-text strong {
+                font-size: 1rem;
+            }
+
+            .emphasis-box {
+                font-size: 0.95rem;
+                padding: 1rem;
+                margin-top: 1.5rem;
+            }
+
+            .navigation {
+                bottom: 0.5rem;
+                gap: 0.5rem;
+                width: 100%;
+                padding: 0 1rem;
+                justify-content: space-between;
+            }
+
+            button {
+                padding: 0.7rem 1.25rem;
+                font-size: 0.85rem;
+                flex: 1;
+            }
+
+            .slide-indicator {
+                top: 1rem;
+                right: 1rem;
+                font-size: 0.85rem;
+            }
+
+            .slide::before {
+                width: 400px;
+                height: 400px;
+                opacity: 0.2;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="slide-indicator">
+            <span id="currentSlide">1</span> / 9
+        </div>
+
+        <!-- Slide 1: Titre -->
+        <div class="slide active">
+            <div class="text-container">
+                <h1>Guide simple :<br>Perte de gras &<br>recomposition corporelle</h1>
+                <p class="subtitle">Des principes clairs, des résultats durables</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Diagnostic -->
+        <div class="slide">
+            <h2>Pourquoi tu ne perds pas de gras</h2>
+            <div class="content-box">
+                <div class="list-item">
+                    <span><strong>Surplus calorique caché</strong> — Tu manges plus que ce que tu penses, même avec des aliments "sains"</span>
+                </div>
+                <div class="list-item">
+                    <span><strong>Manque de protéines</strong> — Sans protéines suffisantes, tu perds du muscle au lieu du gras</span>
+                </div>
+                <div class="list-item">
+                    <span><strong>Pas de cohérence</strong> — Bien manger 3 jours puis craquer le weekend annule tout</span>
+                </div>
+                <div class="list-item">
+                    <span><strong>Trop de "calories liquides"</strong> — Sodas, jus, alcool : des calories sans satiété</span>
+                </div>
+                <div class="list-item">
+                    <span><strong>Sommeil insuffisant</strong> — Moins de 7h par nuit = plus faim + moins d'énergie</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Priorités -->
+        <div class="slide">
+            <h2>Les 4 priorités pour perdre du gras</h2>
+            <div class="grid-2">
+                <div class="card">
+                    <h4>1. Déficit calorique modéré</h4>
+                    <p>Mange 300-500 calories de moins que tes besoins. Pas plus, sinon tu perds du muscle.</p>
+                </div>
+                <div class="card">
+                    <h4>2. Protéines élevées</h4>
+                    <p>1,6 à 2g par kg de poids corporel. Ça préserve tes muscles en déficit.</p>
+                </div>
+                <div class="card">
+                    <h4>3. Activité physique</h4>
+                    <p>Musculation 3-4x/semaine + marche quotidienne. Simple et efficace.</p>
+                </div>
+                <div class="card">
+                    <h4>4. Sommeil de qualité</h4>
+                    <p>7-9h par nuit. C'est là que ton corps récupère et brûle le gras.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Macros -->
+        <div class="slide">
+            <h2>Les macronutriments expliqués simplement</h2>
+            <div class="content-box">
+                <h3>Protéines</h3>
+                <p><span class="highlight">Rôle :</span> Construction et réparation musculaire<br>
+                <span class="highlight">Priorité #1 :</span> Elles te rassasient et préservent ta masse musculaire en déficit</p>
+            </div>
+            <div class="content-box">
+                <h3>Glucides</h3>
+                <p><span class="highlight">Rôle :</span> Énergie rapide pour l'entraînement et le cerveau<br>
+                <span class="highlight">À savoir :</span> Pas l'ennemi ! Choisis des sources de qualité</p>
+            </div>
+            <div class="content-box">
+                <h3>Lipides</h3>
+                <p><span class="highlight">Rôle :</span> Hormones, santé cellulaire, absorption des vitamines<br>
+                <span class="highlight">À savoir :</span> Essentiels, mais caloriques (9 kcal/g vs 4 pour protéines/glucides)</p>
+            </div>
+        </div>
+
+        <!-- Slide 5: Protéines -->
+        <div class="slide">
+            <h2>Aliments riches en protéines</h2>
+            <div class="grid-3">
+                <div>
+                    <div class="food-item">🍗 Poulet</div>
+                    <div class="food-item">🥩 Bœuf maigre</div>
+                    <div class="food-item">🦃 Dinde</div>
+                </div>
+                <div>
+                    <div class="food-item">🐟 Saumon</div>
+                    <div class="food-item">🍤 Crevettes</div>
+                    <div class="food-item">🐟 Thon</div>
+                </div>
+                <div>
+                    <div class="food-item">🥚 Œufs</div>
+                    <div class="food-item">🥛 Fromage blanc 0%</div>
+                    <div class="food-item">🧀 Skyr / Yaourt grec</div>
+                </div>
+            </div>
+            <div class="emphasis-box">
+                💡 Vise une source de protéines à chaque repas
+            </div>
+        </div>
+
+        <!-- Slide 6: Glucides -->
+        <div class="slide">
+            <h2>Bons glucides pour la recomposition</h2>
+            <div class="grid-2">
+                <div>
+                    <div class="food-item">🍚 Riz basmati</div>
+                    <div class="food-item">🥔 Patates douces</div>
+                    <div class="food-item">🍝 Pâtes complètes</div>
+                    <div class="food-item">🌾 Quinoa</div>
+                </div>
+                <div>
+                    <div class="food-item">🍌 Bananes</div>
+                    <div class="food-item">🍓 Fruits rouges</div>
+                    <div class="food-item">🍎 Pommes</div>
+                    <div class="food-item">🥖 Pain complet</div>
+                </div>
+            </div>
+            <div class="emphasis-box">
+                💡 Concentre-les autour de ton entraînement pour l'énergie
+            </div>
+        </div>
+
+        <!-- Slide 7: Lipides -->
+        <div class="slide">
+            <h2>Bonnes sources de lipides</h2>
+            <div class="grid-2">
+                <div>
+                    <div class="food-item">🥑 Avocat</div>
+                    <div class="food-item">🥜 Amandes</div>
+                    <div class="food-item">🌰 Noix</div>
+                    <div class="food-item">🥜 Beurre de cacahuète</div>
+                </div>
+                <div>
+                    <div class="food-item">🫒 Huile d'olive</div>
+                    <div class="food-item">🐟 Saumon gras</div>
+                    <div class="food-item">🥚 Jaunes d'œufs</div>
+                    <div class="food-item">🧈 Beurre clarifié (ghee)</div>
+                </div>
+            </div>
+            <div class="emphasis-box">
+                ⚠️ Attention aux quantités : les lipides sont très caloriques
+            </div>
+        </div>
+
+        <!-- Slide 8: Assiette -->
+        <div class="slide">
+            <h2>Exemple d'assiette simple</h2>
+            <div class="plate-visual">
+                <div class="plate-section">
+                    <div class="plate-icon">🍗</div>
+                    <div class="plate-text">
+                        <strong>½ assiette : Protéines</strong><br>
+                        180-200g de poulet, poisson ou viande maigre
+                    </div>
+                </div>
+                <div class="plate-section">
+                    <div class="plate-icon">🥦</div>
+                    <div class="plate-text">
+                        <strong>¼ assiette : Légumes</strong><br>
+                        Brocoli, épinards, courgettes, salade
+                    </div>
+                </div>
+                <div class="plate-section">
+                    <div class="plate-icon">🍚</div>
+                    <div class="plate-text">
+                        <strong>¼ assiette : Glucides</strong><br>
+                        150g de riz, patate douce ou pâtes
+                    </div>
+                </div>
+                <div class="plate-section">
+                    <div class="plate-icon">🫒</div>
+                    <div class="plate-text">
+                        <strong>1 cuillère : Lipides</strong><br>
+                        Huile d'olive pour la cuisson
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Conclusion -->
+        <div class="slide">
+            <div class="text-container">
+                <h2>Rappel final</h2>
+                <div class="content-box">
+                    <h3 style="font-size: 2rem; text-align: center; margin-bottom: 2rem;">La constance bat la perfection</h3>
+                    <p style="text-align: center; font-size: 1.2rem; line-height: 1.8;">
+                        Pas besoin d'être parfait 7 jours sur 7.<br>
+                        <span class="highlight">Vise 80% de cohérence sur le long terme.</span><br><br>
+                        Les petites actions répétées > les grands efforts ponctuels.<br><br>
+                        <strong style="color: var(--accent-purple);">Tu as toutes les clés. Maintenant, applique.</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <button id="prevBtn" onclick="changeSlide(-1)">← Précédent</button>
+            <button id="nextBtn" onclick="changeSlide(1)">Suivant →</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const slideIndicator = document.getElementById('currentSlide');
+
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[n].classList.add('active');
+            
+            slideIndicator.textContent = n + 1;
+            
+            prevBtn.disabled = n === 0;
+            nextBtn.disabled = n === slides.length - 1;
+        }
+
+        function changeSlide(direction) {
+            currentSlide += direction;
+            if (currentSlide < 0) currentSlide = 0;
+            if (currentSlide >= slides.length) currentSlide = slides.length - 1;
+            showSlide(currentSlide);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+
+        // Touch navigation for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) changeSlide(1);
+            if (touchEndX > touchStartX + 50) changeSlide(-1);
+        }
+
+        showSlide(0);
+    </script>
+</body>
+</html>
